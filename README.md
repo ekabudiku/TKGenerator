@@ -45,29 +45,6 @@ TK.[Kode Prov].[Kode Kab].[Kode Kec 1].[Kode Desa 1]-[Kode Kec 2].[Kode Desa 2]-
 
 ---
 
-## 🚀 Panduan Hosting di GitHub Pages
-
-Aplikasi ini dibangun menggunakan *Vanilla Web Technologies* (HTML5, CSS3 murni, dan JavaScript tanpa framework berat), sehingga dapat langsung di-hosting gratis di **GitHub Pages** dalam hitungan detik:
-
-1. Buat repositori baru di GitHub (misal: `tkgen` atau `titik-kartometrik`).
-2. Unggah semua file proyek ini (`index.html`, `style.css`, `app.js`, `data.js`, `favicon.svg`, `README.md`) ke repositori tersebut:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit TKGen"
-   git branch -M main
-   git remote add origin https://github.com/USERNAME/tkgen.git
-   git push -u origin main
-   ```
-3. Di halaman repositori GitHub, buka menu **Settings** > **Pages** (di sidebar kiri).
-4. Di bagian **Build and deployment** > **Branch**:
-   - Pilih Branch: `main`
-   - Pilih Folder: `/ (root)`
-   - Klik **Save**.
-5. Tunggu 1–2 menit, website Anda sudah aktif dan dapat diakses publik melalui URL:
-   `https://USERNAME.github.io/tkgen/`
-
----
 
 ## 👨‍💻 Watermark & Pengembang
 
