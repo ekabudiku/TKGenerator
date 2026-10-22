@@ -12,9 +12,9 @@ Berdasarkan pedoman penetapan dan penegasan batas desa dengan metode kartometrik
 
 ### 1. Struktur Format Kode
 ```text
-TK.[Kode Prov].[Kode Kab].[Kode Kec 1].[Kode Desa 1]-[Kode Kec 2].[Kode Desa 2]-[No.TK]
+TK [Kode Prov].[Kode Kab].[Kode Kec 1].[Kode Desa 1]-[Kode Kec 2].[Kode Desa 2]-[No.TK]
 ```
-- **TK**: Singkatan Titik Kartometrik
+- **TK**: Singkatan Titik Kartometrik (diikuti tanda spasi)
 - **Kode Prov** *(Kuning)*: 2 digit kode provinsi
 - **Kode Kab** *(Hijau)*: 2 digit kode kabupaten/kota
 - **Kode Kec** *(Biru)*: 2 digit kode kecamatan
@@ -25,8 +25,8 @@ TK.[Kode Prov].[Kode Kab].[Kode Kec 1].[Kode Desa 1]-[Kode Kec 2].[Kode Desa 2]-
 ### 2. TK Reguler vs TK Simpul
 | Jenis Titik | Jumlah Desa | Format Akhiran | Contoh Hasil |
 | :--- | :--- | :--- | :--- |
-| **TK Reguler** | Tepat 2 Desa | `-001`, `-002`, dst. | `TK.33.02.01.2001-01.2002-001` |
-| **TK Simpul** | 3+ Desa (Tanpa Batas) | Selalu `-000` | `TK.33.02.01.2001-02.2002-03.2003-000` |
+| **TK Reguler** | Tepat 2 Desa | `-001`, `-002`, dst. | `TK 72.04.04.2001-04.2003-009` |
+| **TK Simpul** | 3+ Desa (Tanpa Batas) | Selalu `-000` | `TK 74.13.01.2001-02.2001-03.2001-000` |
 
 ---
 

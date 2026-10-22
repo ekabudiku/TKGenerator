@@ -29,7 +29,7 @@ const state = {
   noTk: 1,
   autoIncrement: true,
   suffixSep: '-', // '-' or '.'
-  prefix: 'TK.',  // 'TK.' or 'TK'
+  prefix: 'TK ',  // 'TK ' (tanpa titik setelah TK)
 
   // History
   history: []
@@ -721,7 +721,7 @@ function updateOutput() {
         <span>TK</span>
         <span class="label">Tipe</span>
       </div>
-      <span class="diag-sep">.</span>
+      <span class="diag-sep" style="opacity: 0.3; margin: 0 3px;">&nbsp;</span>
 
       <!-- Kode Prov (Yellow) -->
       <div class="diag-box prov">
