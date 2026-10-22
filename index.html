@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TKGenerator - Generator Nama Titik Kartometrik (TK Reguler & TK Simpul)</title>
+
+  <meta name="description"
+    content="Aplikasi pembuat nama Titik Kartometrik (TK) otomatis sesuai aturan BIG dan Permendagri untuk batas desa satu kecamatan atau antarkecamatan.">
+  <meta name="keywords"
+    content="titik kartometrik, penomoran batas desa, TK reguler, TK simpul, kartometrik BIG, permendagri batas desa">
+  <meta name="author" content="@ekabudiku">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="TKGenerator - Generator Nama Titik Kartometrik">
+  <meta property="og:description"
+    content="Generator format penomoran titik kartometrik (TK Reguler & Simpul) otomatis, cepat, dan presisi.">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Main Container -->
+  <div class="app-container">
+
+    <!-- Header Section -->
+    <header class="site-header">
+      <div class="brand-wrapper">
+        <div class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+            <line x1="8" y1="2" x2="8" y2="18"></line>
+            <line x1="16" y1="6" x2="16" y2="22"></line>
+          </svg>
+        </div>
+        <div class="brand-titles">
+          <h1>TKGenerator</h1>
+          <p>Generator Nama Titik Kartometrik</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Quick Guide Modal Trigger -->
+        <button id="guideBtn" class="btn btn-secondary btn-sm" title="Panduan Aturan Penomoran TK">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          Panduan
+        </button>
+
+        <!-- Theme Toggle Button (Light/Dark) -->
+        <button id="themeToggleBtn" class="btn-icon" aria-label="Ganti Tema" title="Ganti Mode Gelap/Terang">
+          <svg class="theme-icon sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="theme-icon moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero Title -->
+    <section class="hero-section">
+      <div class="hero-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+        Standar Permendagri &amp; BIG • 38 Provinsi • 514 Kab/Kota • 83.500+ Desa
+      </div>
+      <h2 class="hero-title">Generator Nama Titik Kartometrik</h2>
+      <p class="hero-subtitle">
+        Pilih jenis batas wilayah dan generate standar penamaan TK secara instan.
+      </p>
+    </section>
+
+    <!-- Center Interactive Slider (Pilihan TK Reguler / TK Simpul) -->
+    <section class="slider-container" aria-label="Pilihan Jenis Titik Kartometrik">
+      <div class="mode-slider-pill" id="modeSliderPill" data-active="reguler">
+        <div class="slider-thumb" aria-hidden="true"></div>
+
+        <!-- Button TK Reguler -->
+        <button type="button" class="slider-option-btn active" id="btnModeReguler" role="tab" aria-selected="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <circle cx="5" cy="12" r="3" fill="currentColor"></circle>
+            <circle cx="19" cy="12" r="3" fill="currentColor"></circle>
+          </svg>
+          <span>TK Reguler</span>
+          <span class="mode-pill-badge">2 Desa</span>
+        </button>
+
+        <!-- Button TK Simpul -->
+        <button type="button" class="slider-option-btn" id="btnModeSimpul" role="tab" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+            <line x1="12" y1="3" x2="12" y2="9"></line>
+            <line x1="4.22" y1="19.78" x2="9.5" y2="14.5"></line>
+            <line x1="19.78" y1="19.78" x2="14.5" y2="14.5"></line>
+          </svg>
+          <span>TK Simpul</span>
+          <span class="mode-pill-badge">Multi-Desa</span>
+        </button>
+      </div>
+
+      <!-- Description Hint for Selected Mode -->
+      <div class="mode-description-hint" id="modeHintText">
+        Mode <strong>TK Reguler</strong>: Tepat 2 desa batas. Akhiran nomor urut <code>-001, -002, ...</code>
+      </div>
+    </section>
+
+    <!-- Wilayah Induk Bar: Provinsi & Kabupaten -->
+    <section class="wilayah-bar-card" aria-label="Pengaturan Wilayah Administrasi">
+      <div class="wilayah-bar-header">
+        <div class="wilayah-bar-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <span>Wilayah Administrasi Induk</span>
+        </div>
+        <div style="font-size: 0.775rem; color: var(--text-secondary);">
+          Kode Kemendagri Wilayah Pemerintahan
+        </div>
+      </div>
+
+      <div class="wilayah-bar-grid">
+        <!-- Dropdown Provinsi -->
+        <div class="input-group">
+          <label class="input-label" for="provSelect">
+            <span>Provinsi</span>
+            <span class="code-chip prov" id="provCodeChip">74</span>
+          </label>
+          <select id="provSelect" class="select-control"></select>
+        </div>
+
+        <!-- Dropdown Kabupaten/Kota -->
+        <div class="input-group">
+          <label class="input-label" for="kabSelect">
+            <span>Kabupaten / Kota</span>
+            <span class="code-chip kab" id="kabCodeChip">13</span>
+          </label>
+          <select id="kabSelect" class="select-control"></select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Desa Columns Section (Dynamic based on mode) -->
+    <section class="desa-section" aria-label="Kolom Pilihan Desa">
+      <div class="desa-section-header">
+        <div class="desa-section-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span>Daftar Desa yang Berbatasan</span>
+        </div>
+
+        <div class="desa-section-actions">
+          <!-- Quick Swap Desa A & B button (For reguler) -->
+          <button id="btnSwapDesas" class="btn btn-secondary btn-sm" title="Tukar posisi urutan Desa">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 3 21 3 21 8"></polyline>
+              <line x1="4" y1="20" x2="21" y2="3"></line>
+              <polyline points="21 16 21 21 16 21"></polyline>
+              <line x1="15" y1="15" x2="21" y2="21"></line>
+              <line x1="4" y1="4" x2="9" y2="9"></line>
+            </svg>
+            Tukar Posisi
+          </button>
+
+          <!-- Add Village Button (TK Simpul only, hidden on Reguler) -->
+          <button id="btnAddVillage" class="btn btn-primary btn-sm" style="display: none;"
+            title="Tambah desa baru ke titik simpul">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Tambah Desa
+          </button>
+        </div>
+      </div>
+
+      <!-- Desa Cards Grid -->
+      <div id="desaGrid" class="desa-grid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Numbering Controls for TK Reguler -->
+    <section class="numbering-card" id="numberingCard" aria-label="Penomoran Titik Kartometrik">
+      <div class="numbering-info">
+        <div class="numbering-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
+          <span>Nomor Urut Titik (No.TK)</span>
+        </div>
+        <p class="numbering-subtitle">
+          TK Reguler berakhiran angka urut segmen (001, 002, dst.)
+        </p>
+      </div>
+
+      <div class="numbering-controls">
+        <button class="stepper-btn" onclick="changeNoTk(-1)" title="Kurang 1" aria-label="Kurangi nomor">−</button>
+        <input type="text" id="noTkInput" class="number-input-field" value="001" onchange="setNoTkManual(this.value)"
+          aria-label="Nomor Titik">
+        <button class="stepper-btn" onclick="changeNoTk(1)" title="Tambah 1" aria-label="Tambah nomor">+</button>
+
+        <label class="auto-inc-toggle" title="Otomatis menambah nomor urut setiap kali nama TK disalin">
+          <input type="checkbox" id="autoIncCheckbox" checked>
+          <span>Auto +1 saat salin</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- OUTPUT SECTION (The 1 Output Column with Click-to-Copy) -->
+    <section class="output-card-container" aria-label="Hasil Pembuatan Nama TK">
+      <div class="output-card">
+        <div class="output-header">
+          <span class="output-tag">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Format Standar BIG / Permendagri
+          </span>
+
+          <span class="output-rule-badge" id="outputRuleBadge">
+            <!-- Dynamic Gambar 3 / 4 / Simpul badge -->
+          </span>
+        </div>
+
+        <!-- The Click-to-Copy Display Box -->
+        <div class="output-display-box" id="outputDisplayBox" role="button" tabindex="0"
+          title="Klik untuk menyalin nama TK ke clipboard">
+          <div class="output-text-wrapper">
+            <span class="output-tk-text" id="outputTkText">TK.74.13.01.2001-02.2001-001</span>
+          </div>
+
+          <div class="output-copy-cta" id="outputCopyCta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>Salin Nama TK</span>
+          </div>
+        </div>
+
+        <!-- Interactive Color-Coded Diagram Breakdown (Matches Gambar 3 & 4) -->
+        <div class="diagram-breakdown-section">
+          <div class="diagram-breakdown-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+              <line x1="9" y1="21" x2="9" y2="9"></line>
+            </svg>
+            <span>Dekomposisi Struktur Kode (Sesuai Diagram BIG):</span>
+          </div>
+
+          <div class="diagram-boxes-wrapper" id="diagramBoxesWrapper">
+            <!-- Filled dynamically by app.js matching the exact colors:
+                 Yellow (Prov), Green (Kab), Blue (Kec), Pink (Desa), Gray (No.TK) -->
+          </div>
+        </div>
+
+        <!-- Secondary Customization Options -->
+        <div class="output-actions-bar">
+          <div class="format-options-group">
+            <label for="suffixSepSelect">Pemisah No.TK:</label>
+            <select id="suffixSepSelect">
+              <option value="-" selected>Tanda Hubung (-) [Contoh: -000 / -001]</option>
+              <option value=".">Tanda Titik (.) [Contoh: .000 / .001]</option>
+            </select>
+          </div>
+
+          <div style="font-size: 0.775rem; color: var(--text-muted);">
+            💡 Tips: Tekan spasi atau klik langsung pada kolom untuk menyalin
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- History / Riwayat Salin Section -->
+    <section class="history-section" aria-label="Riwayat Titik Kartometrik">
+      <div class="history-header">
+        <div class="history-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <polyline points="23 20 23 14 17 14"></polyline>
+            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+          </svg>
+          <span>Riwayat Titik yang Dibuat</span>
+          <span class="history-count-badge" id="historyCountBadge">0 data</span>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary btn-sm" onclick="exportHistory('csv')" title="Ekspor riwayat ke file CSV">
+            Unduh CSV
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="exportHistory('txt')" title="Ekspor riwayat ke file TXT">
+            Unduh TXT
+          </button>
+          <button id="btnClearHistory" class="btn btn-danger-ghost btn-sm" title="Hapus semua riwayat">
+            Bersihkan
+          </button>
+        </div>
+      </div>
+
+      <div class="history-table-container">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th style="width: 70px;">Waktu</th>
+              <th style="width: 120px;">Tipe</th>
+              <th>Nama Titik Kartometrik (TK)</th>
+              <th style="width: 90px; text-align: right;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody"></tbody>
+        </table>
+        <div id="historyEmptyState" class="history-empty-state">
+          Belum ada titik kartometrik yang disalin. Klik pada nama TK di atas untuk menyalin dan menyimpannya di sini.
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /.app-container -->
+
+  <!-- Guide Modal -->
+  <div class="modal-backdrop" id="guideModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">Panduan Penomoran Titik Kartometrik (TK)</h3>
+        <button id="closeModalBtn" class="btn-icon" aria-label="Tutup Modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-rule-box">
+          <h4>1. Titik Kartometrik (TK) Reguler</h4>
+          <p>
+            TK Reguler merupakan titik batas yang hanya memisahkan <strong>tepat 2 desa/kelurahan</strong> di sepanjang
+            segmen batas.
+            Penomoran berurutan menggunakan akhiran <code>-001</code>, <code>-002</code>, <code>-003</code>, dan
+            seterusnya.
+          </p>
+        </div>
+
+        <div class="modal-rule-box">
+          <h4>2. Titik Kartometrik (TK) Simpul</h4>
+          <p>
+            TK Simpul adalah titik batas yang menjadi titik temu atau konvergensi dari <strong>3 desa atau
+              lebih</strong> (titik awal/titik akhir suatu segmen batas besar).
+            Sesuai pedoman teknis kartometrik, TK Simpul <strong>selalu berakhiran <code>-000</code></strong>.
+          </p>
+        </div>
+
+        <div class="modal-rule-box">
+          <h4>3. Format Struktur Kode Kemendagri &amp; BIG</h4>
+          <p>
+            • <code>TK</code> = Singkatan Titik Kartometrik<br>
+            • <code>Kode Prov</code> = 2 digit kode provinsi (kuning)<br>
+            • <code>Kode Kab</code> = 2 digit kode kabupaten/kota (hijau)<br>
+            • <code>Kode Kec</code> = 2 digit kode kecamatan (biru)<br>
+            • <code>Kode Desa</code> = 4 digit kode desa/kelurahan (pink)<br>
+            • Tanda hubung <code>-</code> digunakan sebagai pemisah antardesa.<br>
+            • <code>No.TK</code> = Nomor urut titik (abu-abu).
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Footer with Mandatory Watermark Requirement -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <a href="https://instagram.com/ekabudiku" target="_blank" rel="noopener noreferrer" class="footer-watermark"
+        title="Kunjungi profil Instagram @ekabudiku">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+        </svg>
+        <span>Develop with Antigravity by <span class="brand-handle">@ekabudiku</span></span>
+      </a>
+      <div class="footer-disclaimer">
+        Disusun Berdasarkan Pedoman Penetapan dan Penegasan Batas Desa (PBD) • Permendagri &amp; Badan Informasi
+        Geospasial
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

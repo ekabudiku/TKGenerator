@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="pinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e" />
+      <stop offset="100%" stop-color="#e11d48" />
+    </linearGradient>
+  </defs>
+  <!-- Background Rounded Rect -->
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#grad1)" />
+  
+  <!-- Map Grid Lines -->
+  <path d="M12 24 L52 24 M12 40 L52 40 M24 12 L24 52 M40 12 L40 52" stroke="#ffffff" stroke-width="2" stroke-opacity="0.25" stroke-dasharray="2 3" />
+  
+  <!-- Center Pin / Marker -->
+  <path d="M32 14 C25.37 14 20 19.37 20 26 C20 34.5 32 48 32 48 C32 48 44 34.5 44 26 C44 19.37 38.63 14 32 14 Z" fill="#ffffff" />
+  <circle cx="32" cy="25" r="5" fill="#4f46e5" />
+  <circle cx="32" cy="25" r="2.5" fill="#ffffff" />
+</svg>
