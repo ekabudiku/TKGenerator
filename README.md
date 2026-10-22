@@ -25,8 +25,8 @@ TK.[Kode Prov].[Kode Kab].[Kode Kec 1].[Kode Desa 1]-[Kode Kec 2].[Kode Desa 2]-
 ### 2. TK Reguler vs TK Simpul
 | Jenis Titik | Jumlah Desa | Format Akhiran | Contoh Hasil |
 | :--- | :--- | :--- | :--- |
-| **TK Reguler** | Tepat 2 Desa | `-001`, `-002`, dst. | `TK.33.02.01.2001-01.2002-001` |
-| **TK Simpul** | 3+ Desa (Tanpa Batas) | Selalu `-000` | `TK.33.02.01.2001-02.2002-03.2003-000` |
+| **TK Reguler** | Tepat 2 Desa | `-001`, `-002`, dst. | `TK 33.02.01.2001-01.2002-001` |
+| **TK Simpul** | 3+ Desa (Tanpa Batas) | Selalu `-000` | `TK 33.02.01.2001-02.2002-03.2003-000` |
 
 ---
 
