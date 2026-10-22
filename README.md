@@ -12,7 +12,7 @@ Berdasarkan pedoman penetapan dan penegasan batas desa dengan metode kartometrik
 
 ### 1. Struktur Format Kode
 ```text
-TK.[Kode Prov].[Kode Kab].[Kode Kec 1].[Kode Desa 1]-[Kode Kec 2].[Kode Desa 2]-[No.TK]
+TK [Kode Prov].[Kode Kab].[Kode Kec 1].[Kode Desa 1]-[Kode Kec 2].[Kode Desa 2]-[No.TK]
 ```
 - **TK**: Singkatan Titik Kartometrik
 - **Kode Prov** *(Kuning)*: 2 digit kode provinsi
