@@ -25,8 +25,13 @@ TK [Kode Prov].[Kode Kab].[Kode Kec 1].[Kode Desa 1]-[Kode Kec 2].[Kode Desa 2]-
 ### 2. TK Reguler vs TK Simpul
 | Jenis Titik | Jumlah Desa | Format Akhiran | Contoh Hasil |
 | :--- | :--- | :--- | :--- |
+ HEAD
 | **TK Reguler** | Tepat 2 Desa | `-001`, `-002`, dst. | `TK 72.04.04.2001-04.2003-009` |
 | **TK Simpul** | 3+ Desa (Tanpa Batas) | Selalu `-000` | `TK 74.13.01.2001-02.2001-03.2001-000` |
+
+| **TK Reguler** | Tepat 2 Desa | `-001`, `-002`, dst. | `TK 33.02.01.2001-01.2002-001` |
+| **TK Simpul** | 3+ Desa (Tanpa Batas) | Selalu `-000` | `TK 33.02.01.2001-02.2002-03.2003-000` |
+ ab4f3a806cc00f4c24672f5cb4f7d699aa689672
 
 ---
 
@@ -45,29 +50,6 @@ TK [Kode Prov].[Kode Kab].[Kode Kec 1].[Kode Desa 1]-[Kode Kec 2].[Kode Desa 2]-
 
 ---
 
-## 🚀 Panduan Hosting di GitHub Pages
-
-Aplikasi ini dibangun menggunakan *Vanilla Web Technologies* (HTML5, CSS3 murni, dan JavaScript tanpa framework berat), sehingga dapat langsung di-hosting gratis di **GitHub Pages** dalam hitungan detik:
-
-1. Buat repositori baru di GitHub (misal: `tkgen` atau `titik-kartometrik`).
-2. Unggah semua file proyek ini (`index.html`, `style.css`, `app.js`, `data.js`, `favicon.svg`, `README.md`) ke repositori tersebut:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit TKGen"
-   git branch -M main
-   git remote add origin https://github.com/USERNAME/tkgen.git
-   git push -u origin main
-   ```
-3. Di halaman repositori GitHub, buka menu **Settings** > **Pages** (di sidebar kiri).
-4. Di bagian **Build and deployment** > **Branch**:
-   - Pilih Branch: `main`
-   - Pilih Folder: `/ (root)`
-   - Klik **Save**.
-5. Tunggu 1–2 menit, website Anda sudah aktif dan dapat diakses publik melalui URL:
-   `https://USERNAME.github.io/tkgen/`
-
----
 
 ## 👨‍💻 Watermark & Pengembang
 
