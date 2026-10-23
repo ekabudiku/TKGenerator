@@ -25,13 +25,17 @@ TK [Kode Prov].[Kode Kab].[Kode Kec 1].[Kode Desa 1]-[Kode Kec 2].[Kode Desa 2]-
 ### 2. TK Reguler vs TK Simpul
 | Jenis Titik | Jumlah Desa | Format Akhiran | Contoh Hasil |
 | :--- | :--- | :--- | :--- |
- HEAD
 | **TK Reguler** | Tepat 2 Desa | `-001`, `-002`, dst. | `TK 72.04.04.2001-04.2003-009` |
-| **TK Simpul** | 3+ Desa (Tanpa Batas) | Selalu `-000` | `TK 74.13.01.2001-02.2001-03.2001-000` |
+| **TK Simpul** | 3+ Desa (Tanpa Batas) | Selalu `-000` | `TK 72.04.01.2002-01.2009-01.2013-000` |
 
-| **TK Reguler** | Tepat 2 Desa | `-001`, `-002`, dst. | `TK 33.02.01.2001-01.2002-001` |
-| **TK Simpul** | 3+ Desa (Tanpa Batas) | Selalu `-000` | `TK 33.02.01.2001-02.2002-03.2003-000` |
- ab4f3a806cc00f4c24672f5cb4f7d699aa689672
+### 3. Aturan Pengurutan Kode Wilayah (Prioritas Kecamatan lalu Desa)
+Sesuai standar teknis penegasan batas (Permendagri & BIG), segmen kode wilayah antardesa diurutkan dari angka **terkecil ke terbesar**:
+1. **Prioritas Utama (Kode Kecamatan)**: Segmen desa diurutkan berdasarkan kode kecamatan terlebih dahulu (dari kecil ke besar).
+2. **Prioritas Kedua (Kode Desa)**: Apabila kode kecamatan sama, maka pengurutan dilanjutkan berdasarkan kode desa (dari kecil ke besar).
+- *Contoh TK Simpul*: Titik pertemuan tiga desa di kecamatan `01` dengan kode desa `2002`, `2009`, dan `2013` menghasilkan:
+  `TK 72.04.01.2002-01.2009-01.2013-000` (urut dari `2002`, `2009`, lalu `2013`).
+- *Contoh TK Reguler (Antarkecamatan)*: Pertemuan desa di kecamatan `04` dan `01` akan menempatkan kecamatan `01` di depan:
+  `TK 72.04.01.2001-04.2003-001`.
 
 ---
 

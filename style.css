@@ -521,10 +521,19 @@ body {
   gap: 0.5rem;
 }
 
+.desa-section-rule-hint {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  display: block;
+  margin-top: 0.15rem;
+}
+
 .desa-section-actions {
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -788,7 +797,8 @@ body {
   border-color: var(--border-focus);
 }
 
-.auto-inc-toggle {
+.auto-inc-toggle,
+.auto-sort-toggle {
   display: flex;
   align-items: center;
   gap: 0.45rem;
@@ -798,7 +808,8 @@ body {
   user-select: none;
 }
 
-.auto-inc-toggle input {
+.auto-inc-toggle input,
+.auto-sort-toggle input {
   accent-color: var(--brand-primary);
   width: 16px;
   height: 16px;

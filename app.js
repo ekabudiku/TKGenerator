@@ -28,6 +28,7 @@ const state = {
   // Numbering
   noTk: 1,
   autoIncrement: true,
+  autoSortDesas: true, // Urut otomatis dari kecil ke besar (Kecamatan lalu Desa)
   suffixSep: '-', // '-' or '.'
   prefix: 'TK ',  // 'TK ' (tanpa titik setelah TK)
 
@@ -109,10 +110,13 @@ function loadSavedPreferences() {
       const parsed = JSON.parse(raw);
       if (parsed.suffixSep) state.suffixSep = parsed.suffixSep;
       if (parsed.autoIncrement !== undefined) state.autoIncrement = parsed.autoIncrement;
+      if (parsed.autoSortDesas !== undefined) state.autoSortDesas = parsed.autoSortDesas;
       const suffixSelect = document.getElementById('suffixSepSelect');
       if (suffixSelect) suffixSelect.value = state.suffixSep;
       const autoIncCheckbox = document.getElementById('autoIncCheckbox');
       if (autoIncCheckbox) autoIncCheckbox.checked = state.autoIncrement;
+      const autoSortCheckbox = document.getElementById('autoSortCheckbox');
+      if (autoSortCheckbox) autoSortCheckbox.checked = state.autoSortDesas;
     }
   } catch (err) {
     console.error('Failed to parse preferences', err);
@@ -122,7 +126,8 @@ function loadSavedPreferences() {
 function savePreferences() {
   const prefs = {
     suffixSep: state.suffixSep,
-    autoIncrement: state.autoIncrement
+    autoIncrement: state.autoIncrement,
+    autoSortDesas: state.autoSortDesas
   };
   localStorage.setItem(STORAGE_PREFS, JSON.stringify(prefs));
 }
@@ -247,6 +252,36 @@ function updateWilayahChips() {
   if (kabChip) kabChip.textContent = state.isCustomWilayah ? state.customKab : state.kabKode;
 }
 
+// --- Sorting Rules for TK Segments ---
+// Sesuai standar Permendagri & BIG:
+// 1. Prioritas Utama: Kode Kecamatan diurutkan dari kecil ke besar.
+// 2. Prioritas Kedua: Jika kode kecamatan sama, Kode Desa diurutkan dari kecil ke besar.
+function compareDesa(a, b) {
+  const kecA = (a.kecKode || '').padStart(2, '0');
+  const kecB = (b.kecKode || '').padStart(2, '0');
+  const kecComp = kecA.localeCompare(kecB, undefined, { numeric: true });
+  if (kecComp !== 0) return kecComp;
+
+  const desaA = (a.desaKode || '').padStart(4, '0');
+  const desaB = (b.desaKode || '').padStart(4, '0');
+  return desaA.localeCompare(desaB, undefined, { numeric: true });
+}
+
+function getSortedDesas(desasList) {
+  return [...desasList].sort(compareDesa);
+}
+
+function sortDesasInState() {
+  state.desas.sort(compareDesa);
+}
+
+function sortDesasManual() {
+  sortDesasInState();
+  renderDesaColumns();
+  updateOutput();
+  showToast('Daftar desa diurutkan: Kecamatan lalu Desa (kecil ke besar) ✨');
+}
+
 // --- Mode Switching (Slider Interaction) ---
 function setMode(newMode) {
   if (state.mode === newMode) return;
@@ -270,7 +305,7 @@ function setMode(newMode) {
     btnSimpul.setAttribute('aria-selected', 'false');
 
     if (hintEl) {
-      hintEl.innerHTML = `Mode <strong>TK Reguler</strong>: Tepat 2 desa batas. Akhiran nomor urut <code>-001, -002, ...</code>`;
+      hintEl.innerHTML = `Mode <strong>TK Reguler</strong>: Tepat 2 desa batas. Diurutkan dari kode terkecil (Kecamatan &rarr; Desa). Akhiran nomor urut <code>-001, -002, ...</code>`;
     }
 
     // Hide "+ Tambah Desa" button in reguler mode
@@ -283,6 +318,10 @@ function setMode(newMode) {
     } else if (state.desas.length < 2) {
       populateDefaultDesas();
     }
+
+    if (state.autoSortDesas) {
+      sortDesasInState();
+    }
   } else {
     // Simpul
     btnSimpul.classList.add('active');
@@ -291,7 +330,7 @@ function setMode(newMode) {
     btnReguler.setAttribute('aria-selected', 'false');
 
     if (hintEl) {
-      hintEl.innerHTML = `Mode <strong>TK Simpul</strong>: Titik pertemuan 3+ desa (bebas tanpa batas). Selalu berakhiran <code>-000</code>`;
+      hintEl.innerHTML = `Mode <strong>TK Simpul</strong>: Titik pertemuan 3+ desa. Diurutkan dari kode terkecil (Kecamatan &rarr; Desa). Selalu berakhiran <code>-000</code>`;
     }
 
     // Show "+ Tambah Desa" button
@@ -301,6 +340,10 @@ function setMode(newMode) {
     // If only 2, add a 3rd default desa for Simpul demonstration
     if (state.desas.length < 3) {
       addDefaultThirdDesa();
+    }
+
+    if (state.autoSortDesas) {
+      sortDesasInState();
     }
   }
 
@@ -338,6 +381,10 @@ function populateDefaultDesas() {
       isCustom: false
     }
   ];
+
+  if (state.autoSortDesas) {
+    sortDesasInState();
+  }
 }
 
 function addDefaultThirdDesa() {
@@ -356,6 +403,10 @@ function addDefaultThirdDesa() {
     desaNama: candidateDesa.nama,
     isCustom: false
   });
+
+  if (state.autoSortDesas) {
+    sortDesasInState();
+  }
 }
 
 // --- Add & Remove Desa (TK Simpul) ---
@@ -380,9 +431,13 @@ function addDesa() {
     isCustom: false
   });
 
+  if (state.autoSortDesas) {
+    sortDesasInState();
+  }
+
   renderDesaColumns();
   updateOutput();
-  showToast(`Desa ${labelLetter} (${targetDesa.nama}) ditambahkan`);
+  showToast(`Desa (${targetDesa.nama}) ditambahkan`);
 }
 
 function removeDesa(index) {
@@ -390,7 +445,12 @@ function removeDesa(index) {
     showToast('Minimal harus ada 2 desa untuk batas wilayah', 'warning');
     return;
   }
-  const removed = state.desas.splice(index, 1);
+  state.desas.splice(index, 1);
+
+  if (state.autoSortDesas) {
+    sortDesasInState();
+  }
+
   renderDesaColumns();
   updateOutput();
   showToast(`Kolom desa berhasil dihapus`);
@@ -473,7 +533,8 @@ function renderDesaColumns() {
                 </label>
                 <input type="text" maxlength="2" class="input-control" style="font-family: monospace;" 
                        placeholder="01" value="${item.kecKode}" 
-                       oninput="handleCustomKecChange(${index}, this.value)" />
+                       oninput="handleCustomKecChange(${index}, this.value)"
+                       onblur="handleCustomBlur(${index})" />
               </div>
               <div class="input-group">
                 <label class="input-label">
@@ -482,7 +543,8 @@ function renderDesaColumns() {
                 </label>
                 <input type="text" maxlength="4" class="input-control" style="font-family: monospace;" 
                        placeholder="2001" value="${item.desaKode}" 
-                       oninput="handleCustomDesaChange(${index}, this.value)" />
+                       oninput="handleCustomDesaChange(${index}, this.value)"
+                       onblur="handleCustomBlur(${index})" />
               </div>
             </div>
           ` : `
@@ -559,6 +621,10 @@ function handleKecamatanSelect(index, newKecKode) {
     state.desas[index].desaNama = newKec.desa[0].nama;
   }
 
+  if (state.autoSortDesas) {
+    sortDesasInState();
+  }
+
   renderDesaColumns();
   updateOutput();
 }
@@ -573,6 +639,10 @@ function handleDesaSelect(index, newDesaKode) {
 
   if (desa) {
     state.desas[index].desaNama = desa.nama;
+  }
+
+  if (state.autoSortDesas) {
+    sortDesasInState();
   }
 
   renderDesaColumns();
@@ -591,24 +661,33 @@ function handleCustomNameChange(index, val) {
 }
 
 function handleCustomKecChange(index, val) {
-  state.desas[index].kecKode = val.padStart(2, '0').slice(-2);
+  state.desas[index].kecKode = val;
   updateOutput();
 }
 
 function handleCustomDesaChange(index, val) {
-  state.desas[index].desaKode = val.padStart(4, '0').slice(-4);
+  state.desas[index].desaKode = val;
+  updateOutput();
+}
+
+function handleCustomBlur(index) {
+  if (state.desas[index]) {
+    if (state.desas[index].kecKode) {
+      state.desas[index].kecKode = state.desas[index].kecKode.padStart(2, '0').slice(-2);
+    }
+    if (state.desas[index].desaKode) {
+      state.desas[index].desaKode = state.desas[index].desaKode.padStart(4, '0').slice(-4);
+    }
+  }
+  if (state.autoSortDesas) {
+    sortDesasInState();
+    renderDesaColumns();
+  }
   updateOutput();
 }
 
 function swapDesas() {
-  if (state.desas.length >= 2) {
-    const temp = state.desas[0];
-    state.desas[0] = state.desas[1];
-    state.desas[1] = temp;
-    renderDesaColumns();
-    updateOutput();
-    showToast('Posisi Desa A & Desa B berhasil ditukar');
-  }
+  sortDesasManual();
 }
 
 // --- Numbering Stepper for TK Reguler ---
@@ -645,7 +724,7 @@ function updateNoTkDisplay() {
 function generateTkResult() {
   const prov = state.isCustomWilayah ? state.customProv : state.provKode;
   const kab = state.isCustomWilayah ? state.customKab : state.kabKode;
-  const prefix = state.prefix; // "TK."
+  const prefix = state.prefix; // "TK "
 
   // Suffix number
   let suffixNumber = '000';
@@ -655,37 +734,39 @@ function generateTkResult() {
     suffixNumber = '000';
   }
 
-  // Format desa parts: [Kec1].[Desa1] - [Kec2].[Desa2] - [Kec3].[Desa3]...
-  const desaSegments = state.desas.map(d => `${d.kecKode}.${d.desaKode}`).join('-');
+  // Urutkan desa: prioritas kode kecamatan dari kecil ke besar, jika kecamatan sama maka kode desa dari kecil ke besar
+  const sortedDesas = getSortedDesas(state.desas);
 
-  // Final code: TK.Prov.Kab.Kec1.Desa1-Kec2.Desa2-Suffix
-  // Notice user prompt specifies suffix separator: -000, -001
+  // Format desa parts: [Kec1].[Desa1] - [Kec2].[Desa2] - [Kec3].[Desa3]...
+  const desaSegments = sortedDesas.map(d => `${d.kecKode}.${d.desaKode}`).join('-');
+
+  // Final code: TK Prov.Kab.Kec1.Desa1-Kec2.Desa2-Suffix
   const sep = state.suffixSep || '-';
   const fullCode = `${prefix}${prov}.${kab}.${desaSegments}${sep}${suffixNumber}`;
 
   // Check condition for caption (Gambar 3 vs Gambar 4 vs Simpul)
   let ruleType = '';
   if (state.mode === 'simpul') {
-    ruleType = `Titik Simpul (Pertemuan ${state.desas.length} Desa) • Akhiran ${sep}000`;
+    ruleType = `Titik Simpul (Pertemuan ${sortedDesas.length} Desa • Urut Kec & Desa) • Akhiran ${sep}000`;
   } else {
     // Check if desas are in same or different kecamatan
-    const kecSet = new Set(state.desas.map(d => d.kecKode));
+    const kecSet = new Set(sortedDesas.map(d => d.kecKode));
     if (kecSet.size === 1) {
-      ruleType = `Satu Kecamatan (Format Gambar 3) • Akhiran ${sep}${suffixNumber}`;
+      ruleType = `TK Reguler (Satu Kecamatan • Urut Desa) • Akhiran ${sep}${suffixNumber}`;
     } else {
-      ruleType = `Berbeda Kecamatan (Format Gambar 4) • Akhiran ${sep}${suffixNumber}`;
+      ruleType = `TK Reguler (Beda Kecamatan • Urut Kec & Desa) • Akhiran ${sep}${suffixNumber}`;
     }
   }
 
   // Summary label
-  const villageNames = state.desas.map(d => d.desaNama || `Desa (${d.desaKode})`).join(' & ');
+  const villageNames = sortedDesas.map(d => d.desaNama || `Desa (${d.desaKode})`).join(' & ');
 
   return {
     fullCode,
     prefix,
     prov,
     kab,
-    desaList: state.desas,
+    desaList: sortedDesas,
     suffixNumber,
     sep,
     ruleType,
@@ -944,9 +1025,29 @@ function setupEventListeners() {
   const addVillageBtn = document.getElementById('btnAddVillage');
   if (addVillageBtn) addVillageBtn.addEventListener('click', addDesa);
 
-  // Swap desas button
+  // Sort desas button
+  const sortBtn = document.getElementById('btnSortDesas');
+  if (sortBtn) sortBtn.addEventListener('click', sortDesasManual);
+
   const swapBtn = document.getElementById('btnSwapDesas');
-  if (swapBtn) swapBtn.addEventListener('click', swapDesas);
+  if (swapBtn) swapBtn.addEventListener('click', sortDesasManual);
+
+  // Auto-sort checkbox
+  const autoSortCheckbox = document.getElementById('autoSortCheckbox');
+  if (autoSortCheckbox) {
+    autoSortCheckbox.addEventListener('change', (e) => {
+      state.autoSortDesas = e.target.checked;
+      savePreferences();
+      if (state.autoSortDesas) {
+        sortDesasInState();
+        renderDesaColumns();
+        updateOutput();
+        showToast('Auto-urutkan aktif: desa diurutkan otomatis');
+      } else {
+        showToast('Auto-urutkan nonaktif: gunakan tombol Urutkan');
+      }
+    });
+  }
 
   // Output display box click-to-copy & keyboard accessibility
   const outputBox = document.getElementById('outputDisplayBox');

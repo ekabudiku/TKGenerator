@@ -175,26 +175,33 @@
     <!-- Desa Columns Section (Dynamic based on mode) -->
     <section class="desa-section" aria-label="Kolom Pilihan Desa">
       <div class="desa-section-header">
-        <div class="desa-section-title">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-          </svg>
-          <span>Daftar Desa yang Berbatasan</span>
+        <div class="desa-section-title-wrap">
+          <div class="desa-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Daftar Desa yang Berbatasan</span>
+          </div>
+          <span class="desa-section-rule-hint">
+            Urutan kode: Kode Kecamatan (prioritas utama), lalu Kode Desa (dari kecil ke besar)
+          </span>
         </div>
 
         <div class="desa-section-actions">
-          <!-- Quick Swap Desa A & B button (For reguler) -->
-          <button id="btnSwapDesas" class="btn btn-secondary btn-sm" title="Tukar posisi urutan Desa">
+          <!-- Urutkan Desa Button -->
+          <button id="btnSortDesas" class="btn btn-secondary btn-sm" title="Urutkan desa sesuai aturan standar (Kecamatan lalu Desa dari kecil ke besar)">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="16 3 21 3 21 8"></polyline>
-              <line x1="4" y1="20" x2="21" y2="3"></line>
-              <polyline points="21 16 21 21 16 21"></polyline>
-              <line x1="15" y1="15" x2="21" y2="21"></line>
-              <line x1="4" y1="4" x2="9" y2="9"></line>
+              <path d="M3 6h18M6 12h12m-9 6h6"></path>
             </svg>
-            Tukar Posisi
+            Urutkan Desa
           </button>
+
+          <!-- Auto-Sort Toggle Checkbox in actions -->
+          <label class="auto-sort-toggle" title="Otomatis mengurutkan daftar desa dari kecil ke besar saat memilih">
+            <input type="checkbox" id="autoSortCheckbox" checked>
+            <span>Auto Urut</span>
+          </label>
 
           <!-- Add Village Button (TK Simpul only, hidden on Reguler) -->
           <button id="btnAddVillage" class="btn btn-primary btn-sm" style="display: none;"
@@ -397,6 +404,16 @@
             • <code>Kode Desa</code> = 4 digit kode desa/kelurahan (pink)<br>
             • Tanda hubung <code>-</code> digunakan sebagai pemisah antardesa.<br>
             • <code>No.TK</code> = Nomor urut titik (abu-abu).
+          </p>
+        </div>
+
+        <div class="modal-rule-box" style="border-left: 3px solid var(--brand-primary); background: rgba(var(--brand-primary-rgb), 0.05);">
+          <h4>4. Aturan Pengurutan Kode Wilayah (Kecil ke Besar)</h4>
+          <p>
+            Dalam penyusunan kode TK (baik <strong>TK Reguler</strong> maupun <strong>TK Simpul</strong>), segmen wilayah antardesa diurutkan dari nilai terkecil ke terbesar:<br>
+            • <strong>Prioritas Utama:</strong> Kode Kecamatan diurutkan dari kecil ke besar.<br>
+            • <strong>Jika Kecamatan Sama:</strong> Kode Desa diurutkan dari kecil ke besar.<br>
+            <em>Contoh TK Simpul:</em> Pertemuan desa <code>2002</code>, <code>2009</code>, dan <code>2013</code> pada kecamatan <code>01</code> menghasilkan: <code>TK 72.04.01.2002-01.2009-01.2013-000</code>.
           </p>
         </div>
       </div>
